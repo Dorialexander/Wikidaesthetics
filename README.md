@@ -31,6 +31,6 @@ Your inputs are only required in the "settings.py" file.
 
 <h3>What's next?</h3>
 
-The gexf file may be used as such with a javascript dataviz library. Yet, it is preferable to enhance it using Gephi. You will get the ability to define a modelization (force directed, ) and set the colours and the size of the items and the edge according to the attributes or the intensity of the relationship links. Gephi includes a sigma.js plugin that produces some very nice dataviz.
+The gexf file may be used as such with a javascript dataviz library. Yet, it is preferable to enhance it using Gephi. You will get the ability to define a modelization (force directed, ) and set the colours and the size of the items and the edge according to the attributes or the intensity of the relationship links. <a href="http://gephi.github.io/">Gephi</a> includes a sigma.js plugin that produces some very nice dataviz.
 
 Using this working process, I have produced a <a href="http://projetjourdain.org/network/index.html">network of ancient philosophers</a>. A set of colours distinguishes each philosopher according to their philosophical affiliation (red for Platonists, green for Stoicians…), and each edge according to their accuracy (red for hypothetical, green for near-certainty…).
