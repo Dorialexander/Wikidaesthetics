@@ -5,24 +5,27 @@ import codecs
 from gexfmaker import *
 
 
-# A CLASS TO STORE PROFILE DATA WITH STATEMENT
 class Profile:
+	"""A class to store profile data with statement"""
+
 	def __init__(self, id, name, relation, statement):
 		self.id = id
 		self.name = name
 		self.relation = relation
 		self.statement = statement
 		
-#A CLASS TO STORE PROFILE DATA WITHOUT STATEMENT
 class ProfileStateless:
+	"""A class to store profile data without statement"""
+	
 	def __init__(self, id, name, relation):
 		self.id = id
 		self.name = name
 		self.relation = relation
 
 
-#MAIN FUNCTION
 def wikidaesthetics (id, relationship, attributes, accuracy, searchmode, maxima, lang, dataviz, filename):
+	"""main function"""
+	
 	unknown = str(getslabelbyid("400506", lang)).lower()
 	tupleidprop = correctnames(id, relationship)
 	id = tupleidprop[0]
@@ -58,8 +61,9 @@ def correctnames(id, relationship):
 
 #IDENTIFICATION OF ID AND PROPERTIES
 
-#Get properties names
 def getattributesname(attributes, lang):
+	"""get properties names"""
+
 	attributescoll = []
 	for att in attributes:
 		request = "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=P" + str(att) + "&format=json&languages=" + str(lang) + "&props=labels"
@@ -79,8 +83,10 @@ def getattributesname(attributes, lang):
 			print 'No API. Got an error code:', e
 	return attributescoll
 
-#Get id name
+
 def getslabelbyid(id, lang):
+	"""get id name"""
+	
 	request = "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q" + str(id) + "&format=json&languages=" + str(lang) + "&props=labels"
 	try:
 		response = urlopen(request)
@@ -190,9 +196,11 @@ def relationascend(property, id, accuracy):
 		print 'No API. Got an error code:', e
 
 
-#get a list of statements from the list of attributes
+
 
 def getsstatement(id, attributes, lang, unknown):
+	"""get a list of statements from the list of attributes"""
+	
 	finalproplist = []
 	for att in attributes:
 		properties = att[1]
@@ -214,17 +222,19 @@ def getsstatement(id, attributes, lang, unknown):
 			print 'No API. Got an error code:', e
 	return finalproplist
 
-#check if the id is not already on the list
 
 def check(id, profilerecord):
+	"""check if the id is not already on the list"""
 	check = True
 	for elm in profilerecord:
 		if id == elm.id:
 			check = False
 	return check
 
-#Remove duplicates on the list (in case the web is switched)
+
 def cleanup(fulllist, newlist):
+	"""Remove duplicates on the list (in case the web is switched)"""
+	
 #	indexcounter = -1
 	for elm in fulllist:
 #		indexcounter +=1
@@ -233,8 +243,10 @@ def cleanup(fulllist, newlist):
 				newlist.remove(item)
 	return newlist
 
-#Get the profile of a Wikidata id (which includes id, name and relations)
+
 def getprofile(id, relationship, attributes, accuracy, searchmode, lang, unknown):
+	"""Get the profile of a Wikidata id (which includes id, name and relations)"""
+	
 	name = getslabelbyid(id, lang)
 	if accuracy == "yes":
 		if searchmode == "ascending":
@@ -267,8 +279,9 @@ def getprofile(id, relationship, attributes, accuracy, searchmode, lang, unknown
 		profile = Profile(id, name, relation, statement)
 	return profile
 
-#get all the profile of the connected id in a descending order
 def crawling(id, relationship, attributes, accuracy, searchmode, lang, unknown, maxima):
+	"""get all the profile of the connected id in a descending order"""
+
 	profilerecord = []
 	lastlist = [id]
 	x = 0
