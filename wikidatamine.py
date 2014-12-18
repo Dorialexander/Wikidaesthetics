@@ -44,6 +44,8 @@ def wikidaesthetics (id, relationship, attributes, accuracy, searchmode, maxima,
 		print "No known value. Defaulting to \"none\""
 
 def correctnames(id, relationship):
+	"""Correct the names of id and properties (so that the user can either state "Q666", "666" or 666)"""
+	
 	if isinstance(id, basestring):
 		if id[0] == "Q":
 			id = id[1:len(id)]
@@ -102,9 +104,11 @@ def getslabelbyid(id, lang):
 		print 'No API. Got an error code:', e
 
 
-#SOME FUNCTIONS TO GET RELATIONS AND THE DEGREE OF CERTAINTY (1 = hypothetically, 2 = presumably, 3 = near-certainty)
+#SOME FUNCTIONS TO GET RELATIONS AND THE DEGREE OF CERTAINTY (1 = hypothetically, 2 = presumably, 3 = near-certainty) THE WHOLE PROCESS IS NOT OPTIMAL AND TAKES UP SOME UNECESSARY LOADING TIME (COULD BE DISABLED IN SETTINGS.PY WITH ACCURACY="none")
 
 def getrelation(property, id, accuracy):
+	"""get the all the relations"""
+	
 	request = "http://wdq.wmflabs.org/api?q=claim[" + str(property) + ":" + str(id) + "]"
 	try:
 		response = urlopen(request)
@@ -122,6 +126,8 @@ def getrelation(property, id, accuracy):
 		print 'No kittez. Got an error code:', e
 
 def getrelationhypo(property, id):
+	"""get all the hypothetical relations (with sourcing circumstances = "hypothetically" (Q18603603)"""
+	
 	request = "http://wdq.wmflabs.org/api?q=claim[" + str(property) + ":" + str(id) + "]{claim[1480:18603603]}"
 	try:
 		response = urlopen(request)
@@ -137,6 +143,8 @@ def getrelationhypo(property, id):
 		print 'No kittez. Got an error code:', e
 		
 def getrelationprob(property, id):
+	"""get all the probable relations (with sourcing circumstances = "presumably" (Q18122778)"""
+	
 	request = "http://wdq.wmflabs.org/api?q=claim[" + str(property) + ":" + str(id) + "]{claim[1480:18122778]}"
 	try:
 		response = urlopen(request)
@@ -151,7 +159,9 @@ def getrelationprob(property, id):
 	except URLError, e:
 		print 'No kittez. Got an error code:', e
 
-def mergerelation(relation, relationprob, relationhypo): #merge all the certain, prob and hypo relations while keeping the accuracy information
+def mergerelation(relation, relationprob, relationhypo):
+	"""merge all the certain, prob and hypo relations while keeping the accuracy information"""
+	
 	finallist = []
 	for elm in relation:
 		for prob in relationprob:
@@ -280,13 +290,13 @@ def getprofile(id, relationship, attributes, accuracy, searchmode, lang, unknown
 	return profile
 
 def crawling(id, relationship, attributes, accuracy, searchmode, lang, unknown, maxima):
-	"""get all the profile of the connected id in a descending order"""
+	"""the main crawling function"""
 
 	profilerecord = []
 	lastlist = [id]
 	x = 0
 	fulllist = [str(id)]
-	if isinstance (maxima, int):
+	if isinstance (maxima, int): #check if the user has specified a maxima value
 		while (len(lastlist)>0) and (len(profilerecord) < (maxima+1)) :
 			newlist = []
 			for id in lastlist:
@@ -306,7 +316,7 @@ def crawling(id, relationship, attributes, accuracy, searchmode, lang, unknown, 
 			else:
 				lastlist = newlist
 				x+=1
-	else:
+	else: #in case the user has not specified any maxima value : it goes crawling till all the ids have been linked in the network
 		while len(lastlist)>0 :
 			newlist = []
 			for id in lastlist:
