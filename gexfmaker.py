@@ -2,8 +2,10 @@ import getpass
 import time
 import codecs
 
-#SETTING UP THE INTRODUCTION OF THE FILE AND REPORTING THE STATEMENTS TO THE ATTRIBUTE LIST
+
 def intro(objectlist, name):
+	"""setting up the introduction of the file and reporting the statements to the attribute list"""
+
 	nid = 0
 	header = u"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<gexf xmlns=\"http://www.gexf.net/1.2draft\" version=\"1.2\">\n"
 	date = u"    <meta lastmodifieddate=\"" + unicode(time.strftime("%Y/%m/%d")) + u"\">\n"
